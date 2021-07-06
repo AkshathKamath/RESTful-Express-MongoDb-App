@@ -12,9 +12,9 @@
         <input type="text" name="name" placeholder="Name of Product">
         <input type="number" name="price" placeholder="Price of Product">
         <select name="category" id="">
-            <option value="fruit">Fruit</option>
-            <option value="vegetable">Vegetable</option>
-            <option value="dairy">Dairy</option>
+            <% for(let category of categories){ %> 
+                <option value="<%= category %>"><%= category %> </option>
+            <% } %> 
         </select>
         <button type="submit">Submit</button>
     </form>

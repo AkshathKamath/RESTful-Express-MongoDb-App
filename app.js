@@ -19,9 +19,19 @@ app.set('view engine','ejs');
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 
+const categories=['fruit','vegetable','dairy'];
+
 app.get('/products',async (req,res) =>{//Access all products from database
-    const products=await Product.find({});
-    res.render('products/index.ejs',{ products });
+    const {category}=req.query;
+    if(category){
+        const products=await Product.find({category: category });
+        res.render('products/index.ejs',{ products,category });
+    }
+    else{
+        const products=await Product.find({});
+        res.render('products/index.ejs',{ products,category:'All' });
+    }
+    
 })
 
 app.get('/products/:id',async (req,res) =>{//Access a specific product with its id from database
@@ -33,7 +43,7 @@ app.get('/products/:id',async (req,res) =>{//Access a specific product with its 
 })
 
 app.get('/new',(req,res) => {//Adding a new product to database
-    res.render('products/add.ejs');
+    res.render('products/add.ejs',{ categories });
 })
 app.post('/products',async (req,res) => {
     const newProduct=new Product(req.body);
@@ -45,7 +55,7 @@ app.post('/products',async (req,res) => {
 app.get('/products/:id/edit', async (req,res) => {//Update a product
     const {id}=req.params;
     const product= await Product.findById(id);
-    res.render('products/edit.ejs',{ product });
+    res.render('products/edit.ejs',{ product, categories });
 })
 app.put('/products/:id', async (req,res) =>{
     const {id}=req.params;
