@@ -14,6 +14,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         lowercase:true,
         enum: ['fruit','vegetable','dairy']
+    },
+    image:{
+        type: String
     }
 }); 
 const Product=mongoose.model('Product',productSchema);
